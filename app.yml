@@ -1,0 +1,13 @@
+services:
+
+    # configuration for the webpack dev server
+    web:
+        dev:
+            port: 12345
+            host: localhost
+
+# Amazon s3 configuration for the demo
+s3:
+    bucket: caldera.design.dlc.s3.amazonaws.com
+    region: us-west-2
+    accessKey: AKIAIS22XIJECTUVQSYA
