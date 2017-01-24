@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ThemeProvider } from 'react-css-themr';
 
 const theme = {
-    S3ImageUploadForm: require('./S3ImageUploadForm.styles.scss')
+    S3UploadForm: require('./S3UploadForm.styles.scss')
 };
 
 export default class Provider extends Component {
