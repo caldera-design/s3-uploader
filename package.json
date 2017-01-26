@@ -1,5 +1,5 @@
 {
-  "name": "caldera-components",
+  "name": "caldera-s3-components",
   "version": "0.0.9",
   "description": "Caldera UI Components Collection.",
   "main": "lib/index.js",
