@@ -18,9 +18,9 @@ class S3UploadForm extends Component {
         region: PropTypes.string.isRequired,
         accessKey: PropTypes.string.isRequired,
         signatureUrl: PropTypes.string.isRequired,
-        successUrl: PropTypes.string.isRequired,
         onSave: PropTypes.func,
         onCancel: PropTypes.func,
+        onError: PropTypes.func,
         errorMessage: PropTypes.string,
         saveMessage: PropTypes.string,
         cancelMessage: PropTypes.string
@@ -29,12 +29,14 @@ class S3UploadForm extends Component {
     static defaultProps = {
         onSave: () => {},
         onCancel: () => {},
+        onError: () => {},
         saveMessage: 'Save',
         cancelMessage: 'Cancel'
     }
 
     state = {
-        isLoading: false
+        isLoading: false,
+        hasFiles: false
     }
 
     componentWillUnmount() {
@@ -50,7 +52,7 @@ class S3UploadForm extends Component {
     }
 
     handleUploadError(fileName, error) {
-        // TODO
+        this.props.onError(fileName, error);
     }
 
     handleSave(uploadedFileName) {
@@ -61,7 +63,8 @@ class S3UploadForm extends Component {
             .then(() => this.props.onSave(uploadedFileName))
             .then(() => {
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
+                    hasFiles: false
                 });
             });
     }
@@ -88,11 +91,13 @@ class S3UploadForm extends Component {
         this.uploader.addFiles(files);
     }
 
-    uploadFiles() {
+    uploadFiles(e) {
+        e && e.stopPropagation();
         this.uploader.uploadFiles();
     }
 
-    clearFiles() {
+    clearFiles(e) {
+        e && e.stopPropagation();
         this.uploader.clearFiles();
     }
 
@@ -126,11 +131,12 @@ class S3UploadForm extends Component {
                                 onError={this.handleUploadError.bind(this)}
                                 onComplete={this.handleUploadComplete.bind(this)}
                                 onProgress={this.handleUploadProgress.bind(this)}
+                                onAddFile={() => this.setState({ hasFiles: true })}
+                                onClearFiles={() => this.setState({ hasFiles: false })}
                                 bucket={this.props.bucket}
                                 region={this.props.region}
                                 accessKey={this.props.accessKey}
                                 signatureUrl={this.props.signatureUrl}
-                                successUrl={this.props.successUrl}
                                 preview={this.renderPreview()}>
                         {this.props.children}
                         {this.renderButtons()}
@@ -158,6 +164,9 @@ class S3UploadForm extends Component {
     }
 
     renderButtons() {
+        if (!this.state.hasFiles) {
+            return;
+        }
         return (
             <div className={this.props.theme.buttonContainer}>
                 <button type="button"

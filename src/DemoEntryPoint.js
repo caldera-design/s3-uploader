@@ -21,7 +21,6 @@ const RootComponent = () => {
                               region="us-west-2"
                               accessKey="AKIAIS22XIJECTUVQSYA"
                               signatureUrl={'http://localhost:6001/api/s3/signature'}
-                              successUrl={'http://localhost:6001/api/s3/success'}
                               style={styles.uploadForm}/>
            </div>
         </Provider>

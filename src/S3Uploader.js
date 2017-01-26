@@ -13,7 +13,9 @@ export default class S3Uploader extends Component {
         region: PropTypes.string.isRequired,
         accessKey: PropTypes.string.isRequired,
         signatureUrl: PropTypes.string.isRequired,
-        successUrl: PropTypes.string.isRequired,
+        debug: PropTypes.bool,
+        onAddFile: PropTypes.func,
+        onClearFiles: PropTypes.func,
         onError: PropTypes.func,
         onComplete: PropTypes.func,
         onProgress: PropTypes.func,
@@ -26,6 +28,8 @@ export default class S3Uploader extends Component {
     }
 
     static defaultProps = {
+        onAddFile:  () => {},
+        onClearFiles:  () => {},
         onComplete: () => {},
         onProgress: () => {},
         onError: () => {},
@@ -57,15 +61,20 @@ export default class S3Uploader extends Component {
     }
 
     addFiles(files) {
+        this.props.debug && console.log(`Adding ${files.length} files.`);
         this.uploader.addFiles(files);
+        this.props.onAddFile();
     }
 
     uploadFiles() {
+        this.props.debug && console.log('Starting upload.');
         this.uploader.uploadStoredFiles();
     }
 
     clearFiles() {
+        this.props.debug && console.log('Clearing files.');
         this.uploader.clearStoredFiles();
+        this.props.onClearFiles();
     }
 
     getUploaderConfig() {
@@ -83,9 +92,6 @@ export default class S3Uploader extends Component {
                 region: this.props.region,
                 acl: this.props.acl
             },
-            uploadSuccess: {
-                endpoint: this.props.successUrl
-            },
             chunking: {
                 enabled: this.props.chunkingEnabled,
                 concurrent: {
@@ -99,8 +105,10 @@ export default class S3Uploader extends Component {
                 enabled: this.props.deleteEnabled
             },
             callbacks: {
-                onComplete: (id, fileName, { uploadedFileName }) => {
-                    this.props.onComplete(fileName, uploadedFileName);
+                onComplete: (id, fileName, ...res) => {
+                    const uploadedKey = this.uploader.getKey(id);
+                    this.props.debug && console.log(`Finished uploading ${fileName}. Uploaded key: ${uploadedKey}.`);
+                    this.props.onComplete(fileName, uploadedKey);
                 },
                 onProgress: (id, fileName, uploadedBytes, totalBytes) => {
                     this.props.onProgress(fileName, uploadedBytes / totalBytes);
