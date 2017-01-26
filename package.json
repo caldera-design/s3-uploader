@@ -1,6 +1,6 @@
 {
   "name": "caldera-components",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Caldera UI Components Collection.",
   "main": "lib/index.js",
   "scripts": {
