@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import * as qq from 'fine-uploader/s3.fine-uploader/s3.fine-uploader.core';
 import { DragAndDrop } from 'fine-uploader/dnd/dnd.js';
+import noop from 'lodash/noop';
 
 export default class S3Uploader extends Component {
 
@@ -28,11 +29,11 @@ export default class S3Uploader extends Component {
     }
 
     static defaultProps = {
-        onAddFile:  () => {},
-        onClearFiles:  () => {},
-        onComplete: () => {},
-        onProgress: () => {},
-        onError: () => {},
+        onAddFile: noop,
+        onClearFiles: noop,
+        onComplete: noop,
+        onProgress: noop,
+        onError: noop,
         acl: 'public-read',
         resumeEnabled: true,
         deleteEnabled: true,

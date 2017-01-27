@@ -5,6 +5,7 @@ import { themr } from 'react-css-themr';
 import classnames from 'classnames';
 import Promise from 'bluebird';
 import $ from 'jquery';
+import noop from 'lodash/noop';
 
 import S3Uploader from './S3Uploader';
 
@@ -27,9 +28,9 @@ class S3UploadForm extends Component {
     }
 
     static defaultProps = {
-        onSave: () => {},
-        onCancel: () => {},
-        onError: () => {},
+        onSave: noop,
+        onCancel: noop,
+        onError: noop,
         saveMessage: 'Save',
         cancelMessage: 'Cancel'
     }
