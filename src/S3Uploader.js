@@ -8,6 +8,7 @@ import noop from 'lodash/noop';
 export default class S3Uploader extends Component {
 
     static propTypes = {
+        styles: PropTypes.object,
         className: PropTypes.string,
         acl: PropTypes.string,
         bucket: PropTypes.string.isRequired,
@@ -127,7 +128,7 @@ export default class S3Uploader extends Component {
 
     render() {
         return (
-            <div className={this.props.className}>
+            <div styles={this.props.styles} className={this.props.className}>
                 {/* {!this.state.showPreview && this.props.preview} */}
                 {this.props.children}
                 {/* <img ref={img => { this.previewImage = img; }} /> */}
