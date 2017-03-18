@@ -128,7 +128,7 @@ export default class S3Uploader extends Component {
 
     render() {
         return (
-            <div styles={this.props.styles} className={this.props.className}>
+            <div style={this.props.styles} className={this.props.className}>
                 {/* {!this.state.showPreview && this.props.preview} */}
                 {this.props.children}
                 {/* <img ref={img => { this.previewImage = img; }} /> */}
