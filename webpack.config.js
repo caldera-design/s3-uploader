@@ -30,12 +30,15 @@ module.exports = {
         demo: ['./src/DemoEntryPoint.js'],
         'hotLoader': 'webpack-hot-middleware/client'
     }),
-    externals: isTest ? {
+    externals: _.extend({}, isTest && {
         'react': true,
         'react-dom': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
-    } : {},
+    }, {
+        'react': true,
+        'react-dom': true
+    }),
     context: __dirname,
     devtool: isProduction ? 'cheap-module-source-map' : 'inline-source-map',
     node: {
@@ -69,32 +72,12 @@ module.exports = {
                 presets: ['react']
             },
             {
-                test: /\.json$/,
-                loader: 'json'
-            },
-            {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
                 query: {
                     cacheDirectory: true
                 }
-            },
-            {
-                test: /(\.scss)$/,
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
-            },
-            {
-                test: /(\.css)$/,
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[local]')
-            },
-            {
-                test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
-                loader: 'file?name=[path][name].[ext]'
-            },
-            {
-                test: /\.modernizrrc$/,
-                loader: 'modernizr'
             },
             {
                 test: /\.ejs/,
